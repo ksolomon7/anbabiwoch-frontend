@@ -1,9 +1,10 @@
 let bookContainer= document.querySelector('#book-collection')
-let bookForm=document.querySelector('.container')
+let bookForm=document.querySelector('.add-book-form')
 let newBookButton=document.querySelector('#new-book-btn')
 let fullBookCollection=document.querySelector('#full-book-collection')
 let newBook=false;
 let showFullInfo=false;
+
 
 // fetch from the backend to show all the books, url: "http://localhost:3000/books"
 fetch("http://localhost:3000/books")
@@ -13,28 +14,40 @@ fetch("http://localhost:3000/books")
 })
 
 //I want to have a list of all the book titles displayed the title list should be clickable and it should conditional render the book information
-
 // renders the book information conditionally
+
 let renderPartialBook= (book)=>{
     // adds a div element in the book collection container
     let bookDiv=document.createElement('div');
     bookDiv.className='card';
+
     bookDiv.dataset.id= book.id
     // add another div to hold all the information for the individual books
     let newBookdiv=document.createElement('div')
-    newBookdiv.className= 'card'
+    newBookdiv.className= 'card-mb3'
   
+    let midDiv=document.createElement('div')
+    midDiv.className="card-mb4"
     //add image for book
     let bookImg= document.createElement('img');
     bookImg.src= book.image
     bookImg.alt= `${book.name} image`
+
     // add title name to a h2 tag
     let bookTitle= document.createElement('h2')
     bookTitle.innerText= book.title
+
+    // add a new button to show book info
+    // let showInfoButton= document.createElement("button")
+    // showInfoButton.className= "add-book-info"
+
+    
     bookTitle.addEventListener("click", (evt)=>{
+    
         showFullInfo=!showFullInfo
+
         if (showFullInfo){
-            bookTitle.style.block= "block"
+            // midDiv.style.block= "block"
             let bookAuthor=document.createElement('span')
             bookAuthor.innerText= `Author/s: ${book.authors}`
             // add p tag to hold the publisher, and published date
@@ -56,6 +69,12 @@ let renderPartialBook= (book)=>{
             deleteBook.addEventListener("click", (evt)=>{
                 deletingBook(book)
             })
+
+            // add new comment form
+            let addNewReview=document.createElement("button")
+            addNewReview.innerText= "Add a new Review"
+            let newCommentForm= document.createElement("form")
+            newCommentForm.id= "new-book-review"
 
             // forEach Review 
             book.reviews.forEach((info)=>{
@@ -132,12 +151,15 @@ let renderPartialBook= (book)=>{
                     })
                 })
                 rating.append(outerOl,increaseButton, decreaseButton)
-                newBookdiv.append(rating)
+                midDiv.append(rating)
             })
             
-                bookDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook)
+                midDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook)
+                // newBookdiv.append(midDiv)
+                bookDiv.append(newBookdiv, midDiv)
+    
         }else{
-            bookTitle.style.block="none"
+            midDiv.style.display="none"
         }
     }) 
     
@@ -152,12 +174,14 @@ newBookButton.addEventListener("click", (evt) => {
     // hide & seek with the form
     newBook = !newBook
     if (newBook === true) {
+        console.log(newBook)
       bookForm.style.display = "none";
       bookForm.addEventListener("submit", (evt)=>{
         evt.preventDefault()
         postBook(evt)
       })
     } else {
+        console.log(newBook)
       bookForm.style.display = "block";
     }
   });
@@ -205,25 +229,6 @@ let deletingBook= (book)=>{
 
 
 
- // let userRating= review.ratings
-    // let updatedRating= userRating + 1
-    // console.log(updatedRating)
-
-    // fetch(`http://localhost:3000/reviews/${review.id}`, {
-    //     method: 'PATCH',
-    //     headers:{
-    //         'Content-type': 'application/json',
-    //         'Accept': 'application/json'
-    //     },
-    //     body:JSON.stringify({
-    //         ratings: updatedRating
-    //     })
-    // })
-    // .then(resp=> resp.json())
-    // .then(updatedObj=>{
-    //     console.log(updatedObj)
-    // })
-
 
 
 // Optional method: where there is a list of titles
@@ -232,23 +237,23 @@ let deletingBook= (book)=>{
 // the title list should be clickable and it should
 // conditional render the book information
 // let showTitles= (book)=>{
-  
-//     let h3= document.createElement('h3')
-//     h3.innerText= book.title
-//     h3.id=book.id
-//     h3.addEventListener("click", (evt)=>{
-//         fetch(`http://localhost:3000/books/${evt.target.id}`)
-//         .then(resp=>resp.json())
-//         .then(secondResp=>{
-//             renderPartialBook(secondResp)
-//         })
+//     console.log(book)
+//     let bookLi= document.createElement('li')
+//     bookLi.className= "list-book-item"
+//     bookLi.innerText= `${book.title}`
+
+
+//     bookLi.addEventListener("click", (evt)=>{
+//         console.log(evt.target)
+//         // fetch(`http://localhost:3000/books/${evt.target.id}`)
+//         // .then(resp=>resp.json())
+//         // .then(secondResp=>{
+//         //     renderPartialBook(secondResp)
+//         // })
 //         // how do i clear the screen in order to show one book at a time, only when selected
 //     })
  
-//     fullBookCollection.append(h3)
+//     bookList.append(bookLi)
 // }
 
 
-// let renderBook=(book)=>{
-//     console.log(book)
-// }

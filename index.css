@@ -41,6 +41,14 @@
   .card{
     text-align: center;
   }
+
+  .card-mb3{
+    text-align:center;
+    padding: 2rem;
+    border: grey solid 1px;
+  }
+
+ 
   /* .card {
     text-justify: auto;
     border: grey solid 1px;
