@@ -20,8 +20,8 @@ let renderPartialBook= (book)=>{
     // adds a div element in the book collection container
     let bookDiv=document.createElement('div');
     bookDiv.className='card';
-
     bookDiv.dataset.id= book.id
+
     // add another div to hold all the information for the individual books
     let newBookdiv=document.createElement('div')
     newBookdiv.className= 'card-mb3'
@@ -37,17 +37,10 @@ let renderPartialBook= (book)=>{
     let bookTitle= document.createElement('h2')
     bookTitle.innerText= book.title
 
-    // add a new button to show book info
-    // let showInfoButton= document.createElement("button")
-    // showInfoButton.className= "add-book-info"
-
     
     bookTitle.addEventListener("click", (evt)=>{
     
-        showFullInfo=!showFullInfo
-
-        if (showFullInfo){
-            // midDiv.style.block= "block"
+        if (midDiv.innerHTML=== " ") {
             let bookAuthor=document.createElement('span')
             bookAuthor.innerText= `Author/s: ${book.authors}`
             // add p tag to hold the publisher, and published date
@@ -70,11 +63,7 @@ let renderPartialBook= (book)=>{
                 deletingBook(book)
             })
 
-            // add new comment form
-            let addNewReview=document.createElement("button")
-            addNewReview.innerText= "Add a new Review"
-            let newCommentForm= document.createElement("form")
-            newCommentForm.id= "new-book-review"
+    
 
             // forEach Review 
             book.reviews.forEach((info)=>{
@@ -96,9 +85,8 @@ let renderPartialBook= (book)=>{
                 increaseButton.style.color= "purple"
                 increaseButton.addEventListener("click", (evt)=>{
                     
-                    console.log(evt.target)
                     let updatedRating= info.ratings + 1
-                    console.log(updatedRating)
+                   
 
                     fetch(`http://localhost:3000/reviews/${info.id}`, {
                           method: "PATCH",
@@ -127,9 +115,7 @@ let renderPartialBook= (book)=>{
                 decreaseButton.style.color= "purple"
                 decreaseButton.addEventListener("click", (evt)=>{
                     
-                    console.log(evt.target)
                     let updatedRating= info.ratings - 1
-                    console.log(updatedRating)
 
                     fetch(`http://localhost:3000/reviews/${info.id}`, {
                           method: "PATCH",
@@ -144,22 +130,202 @@ let renderPartialBook= (book)=>{
                     .then(resp=> resp.json())
                     .then(updatedObj=>{
                           updatedRating= updatedObj.ratings
-                          console.log(updatedRating)
                           info.ratings= updatedRating
-                          console.log(info.ratings)
+                
                           secondLi.innerText= `Rating: ${updatedRating}`
                     })
+
+
                 })
-                rating.append(outerOl,increaseButton, decreaseButton)
-                midDiv.append(rating)
-            })
+
+                // let deleteButton= document.createElement('button')
+                // deleteButton.innerText= `Delete Rating`
+                // console.log(book)
+                // deleteButton.id= book.id
+                // deleteButton.style.color= "purple"
+                // deleteButton.addEventListener("click", (evt)=>{
+                //     deletingReview(evt) 
+                // })
+                    rating.append(outerOl,increaseButton, decreaseButton)
+                    // if you want to add delete button
+                    midDiv.append(rating)
+                })
             
-                midDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook)
-                // newBookdiv.append(midDiv)
-                bookDiv.append(newBookdiv, midDiv)
-    
+                
+                
+            // create a div to hold the reviews
+            let reviewDiv= document.createElement('div')
+            reviewDiv.className= "review"
+
+            // button for adding reviews
+            let addReviewButton= document.createElement('button')
+                addReviewButton.innerText= `Add a new review`
+                addReviewButton.id= book.id
+                console.log(book.title)
+                addReviewButton.style.color= "purple"
+                addReviewButton.addEventListener("click", (evt)=>{
+                    if (reviewDiv.innerHTML=== " "){
+                        let newCommentForm= document.createElement("form")
+                        newCommentForm.id= "new-book-review"
+
+                        let newCommentDiv=document.createElement("div")
+                        newCommentDiv.className= "review-form"
+               
+                        // write a fetch request for localhost:3000/users and have the foreach go through and create a select
+
+                        fetch('http://localhost:3000/users')
+                        .then(resp=> resp.json())
+                        .then(userArray=> {
+                            userArray.forEach(user=>{createUsername(user)})
+                        })
+
+                         let usernameLabel=document.createElement('select')
+                            usernameLabel.type= "text"
+                            usernameLabel.className= "input-text"
+                            usernameLabel.id= "username"
+                            usernameLabel.innerText= "Select User"
+                        
+                        
+                        let createUsername=(user)=>{
+                            let users= document.createElement('option')
+                            users.id= user.id
+                            users.innerText= user.username
+                            usernameLabel.appendChild(users)
+                        }
+
+                        let bookLabel= document.createElement('select')
+                        bookLabel.id= "book"
+                        bookLabel.dataset= book.id
+                        bookLabel.className= "input-text"
+                        bookLabel.innerText= "Select book"
+
+                        let booksOption= document.createElement('option')
+                        booksOption.dataset.id= book.id
+                        booksOption.innerText= book.title
+
+                        bookLabel.append(booksOption)
+
+                        let commentLabel=document.createElement('input')
+                        commentLabel.type= "text"
+                        commentLabel.value=" "
+                        commentLabel.className= "input-text"
+                        commentLabel.id= "comment"
+                        commentLabel.placeholder= "Enter review"
+
+
+                        let ratingLabel=document.createElement('input')
+                        ratingLabel.type= "number"
+                        ratingLabel.value= " "
+                        ratingLabel.className= "input-text"
+                        ratingLabel.id= "Rating"
+                        ratingLabel.placeholder= "Enter number rating"
+
+                        let submitInfoButton= document.createElement("button")
+                        submitInfoButton.type= "Submit"
+                        submitInfoButton.className= "btn btn-primary"
+                        submitInfoButton.innerText= "Create a review"
+
+                        reviewDiv.addEventListener("submit", (evt)=>{
+                            console.log(evt.target)
+                            console.log(book)
+                            evt.preventDefault()
+                
+                            fetch('http://localhost:3000/reviews', {
+                                method: "POST",
+                                headers:{
+                                    'Content-type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body:JSON.stringify({
+                                    comment: evt.target.comment.value,
+                                    ratings: evt.target.Rating.value,
+                                    user_id: evt.target.username.value,
+                                    book_id:book.id
+                                })
+                                })
+                                .then(resp=>resp.json())
+                                .then(secondResp=>{
+                                    console.log(secondResp)
+                                    let outerOl= document.createElement('li')
+                                    outerOl.style= "list-style: none"
+                                    outerOl.innerText= `Username: ${secondResp.user.username}`
+                                    let firstLi=document.createElement('li')
+                                    firstLi.innerText= `Review: ${secondResp.comment}`
+                                    let secondLi=document.createElement('li')
+                                    secondLi.innerText=`Rating: ${secondResp.ratings}`
+                                    evt.target.reset()
+                                    outerOl.append(firstLi, secondLi)
+                                    rating.append(outerOl)
+                                    let increaseButton= document.createElement('button')
+                                    increaseButton.innerText= `Increase Rating`
+                                    increaseButton.id= book.id
+                                    increaseButton.style.color= "purple"
+                                    increaseButton.addEventListener("click", (evt)=>{
+                    
+                                         let updatedRating= secondResp.ratings + 1
+                   
+
+                                        fetch(`http://localhost:3000/reviews/${secondResp.id}`, {
+                                                method: "PATCH",
+                                                headers:{
+                                                'Content-type': 'application/json',
+                                                // 'Accept': 'application/json'
+                                                 },
+                                                body:JSON.stringify({
+                                                ratings: updatedRating
+                                                 })
+                                            })
+                                            .then(resp=> resp.json())
+                                            .then(updatedObj=>{
+                                                updatedRating= updatedObj.ratings
+                                                secondResp.ratings= updatedRating
+                                                secondLi.innerText= `Rating: ${updatedRating}`
+                                            })
+                                        })
+
+                                        // decrease review button
+                                        let decreaseButton= document.createElement('button')
+                                        decreaseButton.innerText= `Decrease Rating`
+                                        decreaseButton.id= book.id
+                                        decreaseButton.style.color= "purple"
+                                        decreaseButton.addEventListener("click", (evt)=>{
+                    
+                                        let updatedRating= secondResp.ratings - 1
+
+                                        fetch(`http://localhost:3000/reviews/${secondResp.id}`, {
+                                                method: "PATCH",
+                                                headers:{
+                                                'Content-type': 'application/json',
+                                                 // 'Accept': 'application/json'
+                                                },
+                                                body:JSON.stringify({
+                                                ratings: updatedRating
+                                            })
+                                        })
+                                        .then(resp=> resp.json())
+                                        .then(updatedObj=>{
+                                              updatedRating= updatedObj.ratings
+                                              secondResp.ratings= updatedRating
+                
+                                              secondLi.innerText= `Rating: ${updatedRating}`
+                                            })
+                                        })
+                                             rating.append(increaseButton, decreaseButton)
+                                        })
+                                    
+                                     })
+
+                                newCommentForm.append(newCommentDiv, usernameLabel, commentLabel, ratingLabel, bookLabel, submitInfoButton)
+                                reviewDiv.append(newCommentForm)
+                    } else {
+                        reviewDiv.innerHTML= " "
+                    }
+                })
+                     midDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook, addReviewButton, reviewDiv)
+                     bookDiv.append(newBookdiv, midDiv)
+           
         }else{
-            midDiv.style.display="none"
+            midDiv.innerHTML= " "
         }
     }) 
     
@@ -174,14 +340,12 @@ newBookButton.addEventListener("click", (evt) => {
     // hide & seek with the form
     newBook = !newBook
     if (newBook === true) {
-        console.log(newBook)
       bookForm.style.display = "none";
       bookForm.addEventListener("submit", (evt)=>{
         evt.preventDefault()
         postBook(evt)
       })
     } else {
-        console.log(newBook)
       bookForm.style.display = "block";
     }
   });
@@ -214,6 +378,10 @@ let postBook=(evt)=>{
     
 }
 
+// let deletingReview=(review)=>{
+//     debugger
+//     console.log(review)
+// }
 // deleting books
 let deletingBook= (book)=>{
    
@@ -225,35 +393,4 @@ let deletingBook= (book)=>{
     bookDomInfo.remove()
     alert("The book has been removed!")
 }
-
-
-
-
-
-
-// Optional method: where there is a list of titles
-// and when clicked presents the book.
-//I want to have a list of all the book titles displayed
-// the title list should be clickable and it should
-// conditional render the book information
-// let showTitles= (book)=>{
-//     console.log(book)
-//     let bookLi= document.createElement('li')
-//     bookLi.className= "list-book-item"
-//     bookLi.innerText= `${book.title}`
-
-
-//     bookLi.addEventListener("click", (evt)=>{
-//         console.log(evt.target)
-//         // fetch(`http://localhost:3000/books/${evt.target.id}`)
-//         // .then(resp=>resp.json())
-//         // .then(secondResp=>{
-//         //     renderPartialBook(secondResp)
-//         // })
-//         // how do i clear the screen in order to show one book at a time, only when selected
-//     })
- 
-//     bookList.append(bookLi)
-// }
-
 

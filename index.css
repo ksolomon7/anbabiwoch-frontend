@@ -48,7 +48,18 @@
     border: grey solid 1px;
   }
 
- 
+  #book-collection {
+    margin: 2rem;
+  }
+
+  .input-text {
+    border-radius: 5px;
+    height: 2rem;
+    width: 100%;
+    font-size: 12px;
+    font-family: monospace;
+    margin: 3px;
+  }
   /* .card {
     text-justify: auto;
     border: grey solid 1px;
