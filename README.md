@@ -52,7 +52,7 @@ To run the frontend repo
 3. HTML
 4. CSS
 5. Bootstrap
-6. 
+ 
 
 
 
