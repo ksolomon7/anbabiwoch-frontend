@@ -34,6 +34,8 @@ let renderPartialBook= (book)=>{
     bookImg.className = "style-img"
     bookImg.alt= book.title
 
+    //
+
     // add title name to a h2 tag
     let bookTitle= document.createElement('h2')
     bookTitle.innerText= book.title
