@@ -1,7 +1,31 @@
  body {
     margin: 0;
     font-family: monospace;
+    /* background: linear-gradient(90deg, rgba(130,14,176,1) 0%, rgba(22,14,124,1) 24%, rgba(22,9,121,1) 48%, rgba(15,75,164,1) 73%, rgba(0,212,255,1) 100%); */
+  
   }
+
+  h2 {
+    font: 'helvetica';
+    font-size: 25px;
+    padding: 15px;
+    position: relative;
+    display: block;
+    transition-duration: 0.2s;
+
+  }
+
+  h2:hover {
+    cursor: pointer;
+    color: rgb(177, 115, 0);
+    padding-top: 10px;
+    transition-duration: 0.2s;
+  }
+
+  h3{
+    color: rgb(230, 151, 5);
+  }
+
 
   
   #book-header {
@@ -23,6 +47,9 @@
     width: auto;
   }
   
+  .style-img {
+    margin: 30px 0px 0px 0px;
+  }
 
   .description {
     text-align: center;
@@ -45,8 +72,10 @@
   }
 
   .card-mb3{
+    /* width: wrap auto; */
     text-align:center;
-    border: grey solid 1px;
+    margin: 10px;
+    border:  grey solid 15px;
   }
   
   .card-mb4{
@@ -68,20 +97,45 @@
   }
 
   button {
+    cursor: pointer;
+    background-color: rgb(203, 116, 41);
+    outline: none;
+    color: white;
     position: relative;
-    border-radius: 10px;
+    margin: 5px;
+    border-radius: 15px;
     height: 3rem;
     width: max-content;
-    font-size: 14px;
-    font-style: arial;
+    font-size: 18px;
+    font-style: 'helvetica';
     justify-self: center;
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12)
+  ;
+  }
+
+  p {
+    font-size: 20px;
+    font-style: 'helvetica';
+  }
+
+  span {
+    font-size: 20px;
+    font-style: 'helvetica';
+
   }
   
   button:hover {
-    background-color: whitesmoke;
+    background-color: rgb(244, 179, 129);
     border: black solid 1px;
   }
   .submit {
+    color: rgb(177, 115, 0);
     position: relative;
     border-radius: 5px;
     height: 2rem;
@@ -90,6 +144,14 @@
     font-size: 14px;
     justify-self: center;
     margin: 3px;
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12)
+  ;
   }
 
   .submit:hover {
