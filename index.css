@@ -1,8 +1,7 @@
  body {
     margin: 0;
     font-family: monospace;
-    /* background: linear-gradient(90deg, rgba(130,14,176,1) 0%, rgba(22,14,124,1) 24%, rgba(22,9,121,1) 48%, rgba(15,75,164,1) 73%, rgba(0,212,255,1) 100%); */
-  
+    background: linear-gradient(0deg, rgba(170,157,169,1) 33%, rgba(255,255,255,1) 83%);
   }
 
   h2 {
@@ -47,8 +46,22 @@
     width: auto;
   }
   
+
+  input[type="text"] {
+    color: orange;
+  }
+
+
+  .placeholder {
+    color:  orange;
+  }
+
   .style-img {
     margin: 30px 0px 0px 0px;
+  }
+
+  .style-img:hover {
+    box-shadow: 5px 5px 5px rgb(203, 145, 75);
   }
 
   .description {
