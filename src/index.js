@@ -52,12 +52,13 @@ let renderPartialBook= (book)=>{
             bookDescription.innerText= book.description
 
             let rating= document.createElement('div')
+            rating.class= "book-review-container"
             rating.innerText= "Book Reviews"
+            
             
             // delete books
             let deleteBook=document.createElement("button")
             deleteBook.innerText= `Remove ${book.title}`
-            deleteBook.style.color= "purple"
             deleteBook.style.border= "padded"
             deleteBook.addEventListener("click", (evt)=>{
                 deletingBook(book)
@@ -67,8 +68,13 @@ let renderPartialBook= (book)=>{
 
             // forEach Review 
             book.reviews.forEach((info)=>{
+                
+                let ratingInfo=document.createElement('div')
+                ratingInfo.dataset.id= info.id
+
                 let outerOl= document.createElement('li')
                 outerOl.className= `${book.title} list`
+                outerOl.dataset.id= info.id
                 outerOl.style= "list-style: none"
                 outerOl.innerText= `Username: ${info.user.username}`
                 let firstLi=document.createElement('li')
@@ -81,8 +87,7 @@ let renderPartialBook= (book)=>{
                 // increase review button
                 let increaseButton= document.createElement('button')
                 increaseButton.innerText= `Increase Rating`
-                increaseButton.id= book.id
-                increaseButton.style.color= "purple"
+                increaseButton.dataset.id= info.id
                 increaseButton.addEventListener("click", (evt)=>{
                     
                     let updatedRating= info.ratings + 1
@@ -101,9 +106,7 @@ let renderPartialBook= (book)=>{
                     .then(resp=> resp.json())
                     .then(updatedObj=>{
                           updatedRating= updatedObj.ratings
-                          console.log(updatedRating)
                           info.ratings= updatedRating
-                          console.log(info.ratings)
                           secondLi.innerText= `Rating: ${updatedRating}`
                     })
                 })
@@ -111,8 +114,7 @@ let renderPartialBook= (book)=>{
                 // decrease review button
                 let decreaseButton= document.createElement('button')
                 decreaseButton.innerText= `Decrease Rating`
-                decreaseButton.id= book.id
-                decreaseButton.style.color= "purple"
+                decreaseButton.dataset.id= info.id
                 decreaseButton.addEventListener("click", (evt)=>{
                     
                     let updatedRating= info.ratings - 1
@@ -138,16 +140,20 @@ let renderPartialBook= (book)=>{
 
                 })
 
-                // let deleteButton= document.createElement('button')
-                // deleteButton.innerText= `Delete Rating`
-                // console.log(book)
-                // deleteButton.id= book.id
-                // deleteButton.style.color= "purple"
-                // deleteButton.addEventListener("click", (evt)=>{
-                //     deletingReview(evt) 
-                // })
-                    rating.append(outerOl,increaseButton, decreaseButton)
-                    // if you want to add delete button
+                let deleteButton= document.createElement('button')
+                deleteButton.innerText= `Delete Rating`
+                deleteButton.dataset.id= info.id
+                deleteButton.addEventListener("click", (evt)=>{
+                    fetch(`http://localhost:3000/reviews/${info.id}`, {
+                        method: "DELETE",   
+                    })
+                   
+                    reviewInfo= document.querySelector(`[data-id="${info.id}"]`)
+                    reviewInfo.remove()
+                    alert("The review has been removed!")
+                })
+                    ratingInfo.append(outerOl,increaseButton, decreaseButton, deleteButton)
+                    rating.append(ratingInfo)
                     midDiv.append(rating)
                 })
             
@@ -161,8 +167,6 @@ let renderPartialBook= (book)=>{
             let addReviewButton= document.createElement('button')
                 addReviewButton.innerText= `Add a new review`
                 addReviewButton.id= book.id
-                console.log(book.title)
-                addReviewButton.style.color= "purple"
                 addReviewButton.addEventListener("click", (evt)=>{
                     if (reviewDiv.innerHTML=== " "){
                         let newCommentForm= document.createElement("form")
@@ -179,7 +183,7 @@ let renderPartialBook= (book)=>{
                             userArray.forEach(user=>{createUsername(user)})
                         })
 
-                         let usernameLabel=document.createElement('select')
+                        let usernameLabel=document.createElement('select')
                             usernameLabel.type= "text"
                             usernameLabel.className= "input-text"
                             usernameLabel.id= "username"
@@ -226,8 +230,6 @@ let renderPartialBook= (book)=>{
                         submitInfoButton.innerText= "Create a review"
 
                         reviewDiv.addEventListener("submit", (evt)=>{
-                            console.log(evt.target)
-                            console.log(book)
                             evt.preventDefault()
                 
                             fetch('http://localhost:3000/reviews', {
@@ -246,20 +248,27 @@ let renderPartialBook= (book)=>{
                                 .then(resp=>resp.json())
                                 .then(secondResp=>{
                                     console.log(secondResp)
+                                    let ratingInfo=document.createElement('div')
+                                    ratingInfo.dataset.id= secondResp.id
+
+
                                     let outerOl= document.createElement('li')
                                     outerOl.style= "list-style: none"
                                     outerOl.innerText= `Username: ${secondResp.user.username}`
+
                                     let firstLi=document.createElement('li')
                                     firstLi.innerText= `Review: ${secondResp.comment}`
                                     let secondLi=document.createElement('li')
                                     secondLi.innerText=`Rating: ${secondResp.ratings}`
                                     evt.target.reset()
+
                                     outerOl.append(firstLi, secondLi)
-                                    rating.append(outerOl)
+                                    // ratingInfo.append(outerOl)
+                                    // midDiv.append(ratingInfo)
+
                                     let increaseButton= document.createElement('button')
                                     increaseButton.innerText= `Increase Rating`
-                                    increaseButton.id= book.id
-                                    increaseButton.style.color= "purple"
+                                    increaseButton.dataset.id= secondResp.id
                                     increaseButton.addEventListener("click", (evt)=>{
                     
                                          let updatedRating= secondResp.ratings + 1
@@ -283,12 +292,11 @@ let renderPartialBook= (book)=>{
                                             })
                                         })
 
-                                        // decrease review button
-                                        let decreaseButton= document.createElement('button')
-                                        decreaseButton.innerText= `Decrease Rating`
-                                        decreaseButton.id= book.id
-                                        decreaseButton.style.color= "purple"
-                                        decreaseButton.addEventListener("click", (evt)=>{
+                                     // decrease review button
+                                    let decreaseButton= document.createElement('button')
+                                    decreaseButton.innerText= `Decrease Rating`
+                                    decreaseButton.dataset.id= secondResp.id
+                                    decreaseButton.addEventListener("click", (evt)=>{
                     
                                         let updatedRating= secondResp.ratings - 1
 
@@ -310,18 +318,37 @@ let renderPartialBook= (book)=>{
                                               secondLi.innerText= `Rating: ${updatedRating}`
                                             })
                                         })
-                                             rating.append(increaseButton, decreaseButton)
+
+                                        
+                                        //  deleting review button
+                                        let deleteButton= document.createElement('button')
+                                        deleteButton.innerText= `Delete Rating`
+                                        deleteButton.dataset.id= secondResp.id
+                                        deleteButton.addEventListener("click", (evt)=>{
+                                        fetch(`http://localhost:3000/reviews/${secondResp.id}`, {
+                                             method: "DELETE",   
                                         })
-                                    
+                   
+                                        reviewInfo= document.querySelector(`[data-id="${secondResp.id}"]`)
+                                        reviewInfo.remove()
+                                        alert("The review has been removed!")
+                                        })
+                                            
+                                            ratingInfo.append(outerOl, increaseButton, decreaseButton, deleteButton)
+                                            rating.append(ratingInfo)
+                                            // midDiv.append(ratingInfo)
+                                        })
+
                                      })
 
+                        
                                 newCommentForm.append(newCommentDiv, usernameLabel, commentLabel, ratingLabel, bookLabel, submitInfoButton)
                                 reviewDiv.append(newCommentForm)
                     } else {
                         reviewDiv.innerHTML= " "
                     }
                 })
-                     midDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook, addReviewButton, reviewDiv)
+                     midDiv.append(bookAuthor,publisherInfo,bookDescription, deleteBook, addReviewButton, reviewDiv,rating)
                      bookDiv.append(newBookdiv, midDiv)
            
         }else{
@@ -378,10 +405,6 @@ let postBook=(evt)=>{
     
 }
 
-// let deletingReview=(review)=>{
-//     debugger
-//     console.log(review)
-// }
 // deleting books
 let deletingBook= (book)=>{
    
