@@ -64,7 +64,7 @@ To run the frontend repo
       <a href="https://github.com/wlcreate">
         <img src="https://avatars2.githubusercontent.com/u/57603757?s=460&u=94c84f50d603476ea226a1dde99118ac8964dc67&v=4" width="200px;" alt=""/><br/><sub><b>Kalkidan Solomon Taye</b></sub>
       </a><br />
-      <a href="https://github.com/wlcreate/Mod1_Restaurant_Reservation_App" title="Code">🌼</a> 
+      <a title="Code">🌼</a> 
       <a href="https://github.com/wlcreate/Mod1_Restaurant_Reservation_App" title="Documentation">📚</a> 
       <a href="#ideas-nunny" title="Ideas, Planning, & Feedback">💡</a>            
     </td>
