@@ -1,4 +1,4 @@
-# anbabiwoch-frontend
+# Anbabiwoch-frontend
 <!-- ## Process -->
 
 ## Table of Contents
